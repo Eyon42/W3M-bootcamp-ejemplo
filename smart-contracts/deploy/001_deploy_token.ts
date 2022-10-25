@@ -14,11 +14,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [initialSupply],
     log: true,
   });
-
-  await deploy('NFT', {
-    from: deployer,
-    log: true,
-  });
 };
 export default func;
 func.tags = ['Token'];

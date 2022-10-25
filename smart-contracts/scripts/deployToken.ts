@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { Token__factory } from "../typechain-types/factories/contracts/Token.sol/Token__factory";
+import { Token__factory } from "../typechain-types/factories/contracts/Token__factory";
 
 async function main() {
   const accounts = await ethers.getSigners();

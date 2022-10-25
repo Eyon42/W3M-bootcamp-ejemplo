@@ -12,11 +12,14 @@ import "./index.css";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
-import NFT from './pages/nft';
-import Token from './pages/token';
+import NFT from './pages/Nft';
+import Token from './pages/Token';
+
+// Custom chain id for localhost
+chain.localhost.id = 31337
 
 const { provider, webSocketProvider } = configureChains(
-  [chain.mainnet, chain.polygon],
+  [chain.mainnet, chain.polygon, chain.localhost],
   [publicProvider()],
 )
 

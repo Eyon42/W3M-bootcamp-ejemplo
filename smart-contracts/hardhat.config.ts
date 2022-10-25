@@ -1,5 +1,7 @@
 import {HardhatUserConfig} from 'hardhat/types';
+import '@typechain/hardhat'
 import '@nomiclabs/hardhat-ethers'
+import 'hardhat-ethernal';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
 

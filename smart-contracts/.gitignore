@@ -4,7 +4,7 @@ coverage
 coverage.json
 typechain
 typechain-types
-
+deployments/IPFS/cats
 #Hardhat files
 cache
 artifacts

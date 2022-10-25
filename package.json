@@ -1,5 +1,8 @@
 {
   "name": "example-project",
+  "scripts": {
+    "dev": "(cd smart-contracts && npx hardhat node) & (cd frontend && npm run start)"
+  },
   "workspaces": [
     "frontend",
     "smart-contracts"
