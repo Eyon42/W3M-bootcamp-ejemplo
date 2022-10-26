@@ -1,13 +1,51 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { ethers } from "ethers";
 import { FC, ReactNode } from "react";
+import NFTDeployment from "smart-contracts/deployments/localhost/CatAdoption.json"
+import { useContractRead, useContractWrite, usePrepareContractWrite } from "wagmi";
+
+const { address, abi } = NFTDeployment
 
 interface NFTCardProps {
   imageURL?: string;
   title?: string;
-  content?: ReactNode
+  content?: ReactNode;
+  tokenId?: number;
 }
 
-const NFTCard: FC<NFTCardProps> = ({imageURL, title, content}) => {
+const NFTCard: FC<NFTCardProps> = ({imageURL, title, content, tokenId}) => {
+
+  // Cat petting
+  const tokenIdBN = ethers.BigNumber.from(tokenId || 0)
+
+  const { config: petConfig } = usePrepareContractWrite({
+    addressOrName: address,
+    contractInterface: abi,
+    functionName: "petCat",
+    args: [tokenIdBN],
+    overrides: {value: ethers.utils.parseEther("0.001")}
+  })
+  const { isLoading: petLoading, write: petCat } = useContractWrite(petConfig)
+
+  // Cat adoption
+
+  const { data: isAdopted } = useContractRead({
+    addressOrName: address,
+    contractInterface: abi,
+    functionName: "isAdopted",
+    args: [tokenIdBN],
+    watch: true
+  })
+
+  const { config: adoptConfig } = usePrepareContractWrite({
+    addressOrName: address,
+    contractInterface: abi,
+    functionName: "adoptCat",
+    args: [tokenIdBN],
+  })
+  const { isLoading: adoptLoading, write: adoptCat } = useContractWrite(adoptConfig)
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -18,15 +56,25 @@ const NFTCard: FC<NFTCardProps> = ({imageURL, title, content}) => {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {title || "A cat name"}
+          {title || "A cat name"} {isAdopted?" (Adopted)":<></>}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {content || "A cat description"}
         </Typography>
       </CardContent>
       <CardActions sx={{alignItems:"center", justifyContent:"center"}}>
-        <Button size="small">Pet</Button>
-        <Button size="small">Adopt</Button>
+        <LoadingButton size="small"
+          disabled={tokenId===undefined || !petCat}
+          onClick={() => petCat!()}
+          loading={petLoading}
+        >Pet</LoadingButton>
+        <LoadingButton size="small"
+          disabled={tokenId===undefined || !adoptCat || !!isAdopted}
+          onClick={() => adoptCat!()}
+          loading={adoptLoading}
+        >
+          Adopt
+        </LoadingButton>
       </CardActions>
     </Card>
   )

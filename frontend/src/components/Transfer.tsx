@@ -14,8 +14,10 @@ const Transfer: FC<TransferProps> = ({token}) => {
   const parsedAmount = ethers.utils.parseEther(transferAmount? transferAmount:"0")
   
   const { config: tokenConfig } = usePrepareContractWrite({
-    address: token,
-    abi: erc20ABI,
+    // address: token, //for newer versions
+    // abi: erc20ABI,
+    addressOrName: token || "",
+    contractInterface: erc20ABI,
     functionName: 'transfer',
     args: [(transferToAddress as any), parsedAmount]
   })

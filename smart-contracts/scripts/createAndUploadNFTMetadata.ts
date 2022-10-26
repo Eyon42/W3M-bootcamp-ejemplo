@@ -34,7 +34,7 @@ async function main() {
 
     })
 
-    fs.writeFileSync("deployments/IPFS/cats.json", JSON.stringify(hashes))
+    fs.writeFileSync("deployments/IPFS/cats.json", JSON.stringify({hashes}))
 }
 
 

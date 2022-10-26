@@ -1,9 +1,10 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useState } from "react";
-import { useContractInfiniteReads } from 'wagmi';
-import NFTCard from "../components/NFTCard";
-import NFTDeployment from "smart-contracts/deployments/localhost/Token.json"
+import { paginatedIndexesConfig, useContractInfiniteReads } from 'wagmi';
+import NFTDeployment from "smart-contracts/deployments/localhost/CatAdoption.json"
+import { BigNumber } from "ethers";
+import NFTDisplay from "../components/NFTDisplay";
+import MintNFT from "../components/MintNFT";
 
 const { address, abi } = NFTDeployment
 
@@ -11,32 +12,37 @@ const catPics = ["https://cdn.pixabay.com/photo/2017/06/12/19/02/cat-2396473__48
 const catSounds = ["Aohhuu","Bark","Bark","Caterwaul","Chatter","Chirp","Chirrup","Churr","Chuckling","Coughing","Cough","Eh","Grow","Grunt","Gurgl","Meow","Moan","Mrrr","Orr","o-o","Ouch","Piercing","Prusten","Puff","Purr","Hiss","Roar","Scream","Snar","Snort","Spit","Squeak","Stutter","Swallowed","Trill","Wah","Whistle","Yap","Yea","Yelp","Yowl"]
 const max = 30
 
-contractConfig = {
-  address,
-  abi
+const contractConfig = {
+  addressOrName: address,
+  contractInterface: abi
 }
 
 const NFT = () => {
-  const [ catName, setCatName ] = useState("")
-  const [ catDescription, setCatDescription ] = useState("")
-  const [ catPic, setCatPic ] = useState("")
   
-  const { data } = useContractInfiniteReads({
-    cacheKey: "catNFTs",
-    contracts(param=0) {
-      const args = [BigNumber.from(param)] as const
-      return [{...contractConfig, functionName: "tokenURI", args}]
-    },
+  const { data, fetchNextPage, refetch } = useContractInfiniteReads({
+    cacheKey: 'cats',
+    ...paginatedIndexesConfig(
+      (index) => {
+        return { //on newer versions this returns an array
+            ...contractConfig,
+            functionName: 'tokenURI',
+            args: [BigNumber.from(index)] as const,
+          }
+      },
+      { start: 0, perPage: 5, direction: 'increment' },
+    )
   })
+  const lastCatsUrls = data?.pages[data?.pages.length - 1]
+  const moreData = lastCatsUrls? !!lastCatsUrls[lastCatsUrls.length - 1]: false
+  let allCats: string[] = []
+  data?.pages.forEach((page) => {allCats = allCats.concat(page)})
+  console.log(allCats)
 
-  const catNFTs = catPics.slice(0, max).map((picURL, i) => (
-    <Grid item xs={2}>
-      <NFTCard
-        title={catSounds[i]}
-        imageURL={picURL}
-        content={"This cat is very cute"}
-      />
+  const catNFTs = allCats.map((meta, i) => (meta?(
+    <Grid item xs={12} sm={6} md={4} lg={3}key={i}>
+      <NFTDisplay metadataURL={meta} tokenId={i}/>
     </Grid>
+    ):<></>
   ))
 
   return (
@@ -45,40 +51,18 @@ const NFT = () => {
       justifyContent="center"
       alignItems="center"
       spacing={10}
-      sx={{paddingTop:10}}
+      sx={{paddingTop:10, paddingBottom:10}}
     >
-      <Grid container spacing={8} justifyContent="center">
-        <Grid item xs={12} justifyContent="center" sx={{textAlign:"center"}}>
-          <Typography variant="h1">
-            Mint a cat
-          </Typography>
-        </Grid>
-        <Grid item xs={4}>
-          <Stack spacing={4} justifyContent="center" sx={{height:"100%"}}>
-            <TextField id="name" label="Cat Name:" value={catName} onChange={(e) => setCatName(e.target.value)}/>
-            <TextField id="description" label="How is your cat:" value={catDescription} onChange={(e) => setCatDescription(e.target.value)}/>
-            <TextField id="picture" label="Link to a picture of your cat:" value={catPic} onChange={(e) => setCatPic(e.target.value)}/>
-            <Button variant="contained" onClick={()=>""}>Send</Button>
-          </Stack>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant="h2">
-            Preview
-          </Typography>
-          <NFTCard
-            title={catName}
-            content={catDescription}
-            imageURL={catPic}
-          /> 
-        </Grid>
-      </Grid>
-
+      <MintNFT reload={refetch}/>
       <Typography variant="h1">
         Collection
       </Typography>
       <Grid container spacing={2} sx={{paddingX:10}}>
         {catNFTs}
       </Grid>
+      {moreData? <Button onClick={() =>fetchNextPage()}>
+        Load More
+      </Button>:<></>}
     </Stack>
   );
 };

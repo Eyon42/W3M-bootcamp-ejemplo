@@ -39,6 +39,7 @@ contract CatAdoption is ERC721URIStorage {
     function adoptCat(uint256 catId) external {
         require(!isAdopted(catId), "This cat is adopted");
         emit Adoption(catId, msg.sender, ownerOf(catId));
+        adopted[catId] = true;
         transferFrom(ownerOf(catId), msg.sender, catId);
     }
 
