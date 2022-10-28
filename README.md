@@ -1,6 +1,11 @@
 # Ejemplo para Web3 Makers
 
-Este proyecto de ejemplo tiene dos partes:
+Bienvenido al proyecto de ejemplo del Bootcamp de [Web3Makers]("https://web3makers.org").
+
+El objetivo de este repo es dar un poco más de contexto al Bootcamp de desarrollo de Smart Contracts en Solidity. Ya que, mientras remix es una excelente herramienta, no cubre todos los casos de uso que nos pueden facilitar el manejo de proyectos más avanzados, por lo que introducimos Hardhat junto con VS Code y la extensión de hardhat-solidity como un mejor ambiente de desarrollo.
+Otro punto que busca demostrar este repo, es como construimos interfaces de usuario usando React y wagmi para interactuar con nuestros smart contracts fuera de Remix, Etherscan o Metamask.
+
+Este proyecto tiene dos partes:
 
 ## Smart Contracts
 Un proyecto de [Hardhat](https://hardhat.org), una framework para facilitar el desarrollo, pruebas e integración con smart contracts. Está escrito usando [Typescript](https://www.typescriptlang.org/) ya que nos permite reducir errores y tener mejor autocompletado y sugerencias para nuestro código y es especialmente útil al interactuar con smart contracts desde Typescript.
