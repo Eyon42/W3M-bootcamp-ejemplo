@@ -32,6 +32,6 @@ Otras librerías usadas:
 
 # Próximos pasos
 Ahora que ya pasaste por el Bootcamp y viste este ejemplo te proponemos el desafío de tomar este repo y construir algo encima. Puede ser arreglar algún bug que hayas encontrado, alguna feature que creas que pueda ser útil o interesante de implementar, resolver posibles vulnerabilidades de seguridad o hasta usarlo como base para un proyecto completamente distinto.
-La idea es que clones este repo y hagas una PR mostrando tu trabajo.
+La idea es hagas un fork de este repo y hagas una PR mostrando tu trabajo.
 
 En caso de necesitar ayuda, te recomendamos que vuelvas a los materiales del bootcamp ya que ahí, además de los videos, encontrarás muchos link a cursos más completos y a la documentación de las herramientas usadas.
