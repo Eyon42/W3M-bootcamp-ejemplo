@@ -6,9 +6,5 @@
   "workspaces": [
     "frontend",
     "smart-contracts"
-  ],
-  "dependencies": {
-    "@mui/lab": "^5.0.0-alpha.105",
-    "@mui/material": "^5.10.11"
-  }
+  ]
 }
