@@ -1,6 +1,6 @@
 # Ejemplo para [Web3Makers](https://web3makers.org)
 
-Bienvenido al proyecto de ejemplo del [Bootcamp de Web3Makers]([https://web3makers.org](https://github.com/Eyon42/W3M-Bootcamp)).
+Bienvenido al proyecto de ejemplo del [Bootcamp de Web3Makers](https://github.com/Eyon42/W3M-Bootcamp).
 
 El objetivo de este repo es dar un poco más de contexto al Bootcamp de desarrollo de Smart Contracts en Solidity. Ya que, mientras remix es una excelente herramienta, no cubre todos los casos de uso que nos pueden facilitar el manejo de proyectos más avanzados, por lo que introducimos Hardhat junto con VS Code y la extensión de hardhat-solidity como un mejor ambiente de desarrollo.
 Otro punto que busca demostrar este repo, es como construimos interfaces de usuario usando React y wagmi para interactuar con nuestros smart contracts fuera de Remix, Etherscan o Metamask.
